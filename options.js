@@ -25,8 +25,8 @@ const versionDisplay = document.getElementById('current-version');
 const checkUpdateBtn = document.getElementById('check-update');
 const updateStatus = document.getElementById('update-status');
 
-// Your Update Source (Raw manifest.json from GitHub)
-const UPDATE_URL = "https://raw.githubusercontent.com/kailous/GeminiSidebar/main/manifest.json";
+// Your Update Source (GitHub Releases API)
+const UPDATE_URL = "https://api.github.com/repos/kailous/GeminiSidebar/releases/latest";
 const REPO_URL = "https://github.com/kailous/GeminiSidebar";
 
 // Initialize
@@ -56,26 +56,19 @@ async function checkForUpdates() {
   updateStatus.className = "update-status checking";
 
   try {
-    // 1. Fetch remote manifest
-    // Note: If you don't have a real URL yet, this will fail. 
-    // I'll add a check to see if owners/repo is placeholder.
-    if (UPDATE_URL.includes("owner/repo")) {
-      setTimeout(() => {
-        updateStatus.textContent = "未配置 GitHub 仓库地址，无法检查。";
-        updateStatus.className = "update-status error";
-      }, 1000);
-      return;
-    }
-
     const response = await fetch(UPDATE_URL, { cache: 'no-cache' });
     if (!response.ok) throw new Error('网络异常');
     
-    const data = await response.json();
-    const latestVersion = data.version;
+    const release = await response.json();
+    // tag_name is usually "v1.1", remove 'v' if present
+    const latestVersion = release.tag_name.replace(/^v/, '');
     const currentVersion = chrome.runtime.getManifest().version;
+    const downloadUrl = (release.assets && release.assets.length > 0) 
+      ? release.assets[0].browser_download_url 
+      : release.html_url;
 
     if (isNewer(latestVersion, currentVersion)) {
-      updateStatus.innerHTML = `发现新版本: <strong>${latestVersion}</strong>！<a href="${REPO_URL}" target="_blank" class="link">立即去下载</a>`;
+      updateStatus.innerHTML = `发现新版本: <strong>${latestVersion}</strong>！<a href="${downloadUrl}" target="_blank" class="link">直接下载 ZIP 包</a>`;
       updateStatus.className = "update-status new-version";
     } else {
       updateStatus.textContent = "当前已是最新版本 (" + currentVersion + ")";
@@ -83,7 +76,7 @@ async function checkForUpdates() {
     }
   } catch (error) {
     console.error('Update Check Error:', error);
-    updateStatus.textContent = "检查失败，请稍后重试。";
+    updateStatus.textContent = "检查失败，请确认已在 GitHub 发布 Release。";
     updateStatus.className = "update-status error";
   }
 }
@@ -92,8 +85,8 @@ async function checkForUpdates() {
  * Simple version comparison (e.g. 1.1 > 1.0)
  */
 function isNewer(latest, current) {
-  const l = latest.split('.').map(Number);
-  const c = current.split('.').map(Number);
+  const l = latest.replace(/^v/, '').split('.').map(Number);
+  const c = current.replace(/^v/, '').split('.').map(Number);
   for (let i = 0; i < Math.max(l.length, c.length); i++) {
     const lVal = l[i] || 0;
     const cVal = c[i] || 0;
