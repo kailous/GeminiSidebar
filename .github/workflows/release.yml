@@ -1,29 +1,52 @@
-name: Create Release
+name: Auto Release
 
 on:
   push:
-    tags:
-      - 'v*' # Trigger on tags like v1.0, v1.1
-  workflow_dispatch: # Allow manual trigger from GitHub UI
+    branches:
+      - main
+    paths:
+      - 'manifest.json' # Only run when manifest.json changes
 
 permissions:
-  contents: write # Required for creating releases
+  contents: write
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Necessary for checking existing tags
+
+      - name: Get version from manifest
+        id: get_version
+        run: |
+          VERSION=$(grep '"version":' manifest.json | cut -d '"' -f 4)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "tag=v$VERSION" >> $GITHUB_ENV
+
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          if git rev-parse "refs/tags/${{ env.tag }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Tag ${{ env.tag }} already exists. Skipping release."
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Package Extension
+        if: steps.check_tag.outputs.exists == 'false'
         run: |
           zip -r GeminiSidebar.zip . -x "*.git*" "*.github*" "*.DS_Store*" "_metadata*" "gem/*" "README.md"
 
-      - name: Create GitHub Release
-        id: create_release
+      - name: Create Release
+        if: steps.check_tag.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.tag }}
+          name: Release ${{ env.tag }}
           files: GeminiSidebar.zip
           generate_release_notes: true
         env:
