@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini Sidebar</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div id="loader-container">
+    <div class="loader">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <p>Connecting to Gemini...</p>
+  </div>
+  
+  <iframe 
+    id="gemini-frame" 
+    src="https://gemini.google.com/app" 
+    allow="clipboard-read; clipboard-write; microphone; camera"
+    frameborder="0">
+  </iframe>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>
