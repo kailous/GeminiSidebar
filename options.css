@@ -314,3 +314,24 @@ input:checked + .slider:before { transform: translateX(20px); }
 .remove-mapping-btn:hover {
   color: #ea4335;
 }
+
+.update-status {
+  margin-top: 12px;
+  font-size: 13px;
+  min-height: 20px;
+}
+
+.update-status.checking {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.update-status.new-version {
+  color: #34a853;
+  font-weight: 600;
+}
+
+.update-status.error {
+  color: #ea4335;
+}
+

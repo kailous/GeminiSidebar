@@ -21,9 +21,87 @@ const delayInput = document.getElementById('capture-delay');
 const delayVal = document.getElementById('delay-val');
 const mappingList = document.getElementById('mapping-list');
 const addMappingBtn = document.getElementById('add-mapping-btn');
+const versionDisplay = document.getElementById('current-version');
+const checkUpdateBtn = document.getElementById('check-update');
+const updateStatus = document.getElementById('update-status');
+
+// Your Update Source (Raw manifest.json from GitHub)
+const UPDATE_URL = "https://raw.githubusercontent.com/kailous/GeminiSidebar/main/manifest.json";
+const REPO_URL = "https://github.com/kailous/GeminiSidebar";
 
 // Initialize
-document.addEventListener('DOMContentLoaded', loadSettings);
+document.addEventListener('DOMContentLoaded', () => {
+  loadSettings();
+  displayVersion();
+});
+
+function displayVersion() {
+  if (versionDisplay) {
+    versionDisplay.textContent = chrome.runtime.getManifest().version;
+  }
+}
+
+// Check for updates
+if (checkUpdateBtn) {
+  checkUpdateBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    checkForUpdates();
+  });
+}
+
+async function checkForUpdates() {
+  if (!updateStatus) return;
+  
+  updateStatus.textContent = "正在检查更新...";
+  updateStatus.className = "update-status checking";
+
+  try {
+    // 1. Fetch remote manifest
+    // Note: If you don't have a real URL yet, this will fail. 
+    // I'll add a check to see if owners/repo is placeholder.
+    if (UPDATE_URL.includes("owner/repo")) {
+      setTimeout(() => {
+        updateStatus.textContent = "未配置 GitHub 仓库地址，无法检查。";
+        updateStatus.className = "update-status error";
+      }, 1000);
+      return;
+    }
+
+    const response = await fetch(UPDATE_URL, { cache: 'no-cache' });
+    if (!response.ok) throw new Error('网络异常');
+    
+    const data = await response.json();
+    const latestVersion = data.version;
+    const currentVersion = chrome.runtime.getManifest().version;
+
+    if (isNewer(latestVersion, currentVersion)) {
+      updateStatus.innerHTML = `发现新版本: <strong>${latestVersion}</strong>！<a href="${REPO_URL}" target="_blank" class="link">立即去下载</a>`;
+      updateStatus.className = "update-status new-version";
+    } else {
+      updateStatus.textContent = "当前已是最新版本 (" + currentVersion + ")";
+      updateStatus.className = "update-status";
+    }
+  } catch (error) {
+    console.error('Update Check Error:', error);
+    updateStatus.textContent = "检查失败，请稍后重试。";
+    updateStatus.className = "update-status error";
+  }
+}
+
+/**
+ * Simple version comparison (e.g. 1.1 > 1.0)
+ */
+function isNewer(latest, current) {
+  const l = latest.split('.').map(Number);
+  const c = current.split('.').map(Number);
+  for (let i = 0; i < Math.max(l.length, c.length); i++) {
+    const lVal = l[i] || 0;
+    const cVal = c[i] || 0;
+    if (lVal > cVal) return true;
+    if (lVal < cVal) return false;
+  }
+  return false;
+}
 
 // Navigation
 navItems.forEach(item => {
