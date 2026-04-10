@@ -1,0 +1,21 @@
+### 核心原则：叙事性优先
+* **避坑：** 不要只堆砌关键词（Tag），如 `1girl, red hair, city`。
+* **准则：** 使用完整的叙事段落。描述一个正在发生的场景，模型能更好地理解连贯性。
+
+### 1. 五大商业场景模板
+* **超写实摄影 (Photorealistic)：** `A photorealistic [镜头类型] of [主体], [动作/表情], set in [环境]. The scene is illuminated by [灯光描述], creating a [氛围] atmosphere. Captured with a [相机/镜头参数], emphasizing [纹理细节]. [长宽比]`
+* **商业样机 (Product Mockup)：** `A high-resolution, studio-lit product photograph of [产品] on a [背景表面]. The lighting is a [布光设置, 如 3-point lighting] to [布光目的, 如 highlight texture]. Camera angle is [角度] to showcase [特征].`
+* **极简留白 (Minimalist/Negative Space)：** `A minimalist composition featuring a single [主体] positioned in the [构图位置]. The background is a vast, empty [颜色] canvas, creating significant negative space. [长宽比]`
+* **精准文字渲染 (Text Rendering)：** `Create a [图片类型] for [品牌] with the text "[文案内容]" in a [字体风格]. The design should be [风格], with a [配色方案].`
+* **风格化贴纸 (Stylized Stickers)：** `A [风格, 如 kawaii/3D render] sticker of a [主体], [特征], [色板]. The background must be transparent.`
+
+### 2. 图像编辑与高级技巧
+* **局部重绘 (Inpainting)：** 指令格式为：`Using the provided image, change ONLY the [特定部分] to [新描述]. Keep everything else EXACTLY the same.`
+* **草图复活 (Sketch-to-Life)：** 将手绘线稿转化为成品。描述需保留的“特定特征”并添加“新材质/细节”。
+* **搜索增强 (Search Grounding)：** 当需要实时信息时（如：生成今天武汉的天气穿搭图），在提示词中加入 `Search the web then generate...`。
+* **多图融合 (Composition)：** Nano Banana Pro 支持最多 14 张参考图。指令需明确：`Take [图A的元素] and place it on [图B的背景].`
+
+### 3. 进阶审美词库
+* **镜头：** `Low-angle perspective` (宏伟感), `Extreme close-up` (细节控), `Wide-angle lens` (空间感).
+* **光影：** `Golden hour light` (温暖温馨), `Cyberpunk neon lighting` (科幻感), `Soft diffused morning light` (清新感).
+* **负面提示词（正向化）：** 不要说“No cars”，要说“An empty street with no signs of traffic”。

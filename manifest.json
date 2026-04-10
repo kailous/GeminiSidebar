@@ -10,7 +10,8 @@
     "scripting",
     "activeTab",
     "tabs",
-    "clipboardWrite"
+    "clipboardWrite",
+    "storage"
   ],
   "host_permissions": [
     "https://gemini.google.com/*",
@@ -45,6 +46,10 @@
   },
   "side_panel": {
     "default_path": "sidepanel.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
   },
   "action": {
     "default_title": "Open Gemini Sidebar",

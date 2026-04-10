@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini Sidebar 设置</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="icons/icon48.png" alt="Logo">
+        <span>设置中心</span>
+      </div>
+      <nav>
+        <button class="nav-item active" data-target="general">常规设置</button>
+        <button class="nav-item" data-target="capture">截图设置</button>
+        <button class="nav-item" data-target="prompts">Gem 跳转设置</button>
+        <button class="nav-item" data-target="about">关于</button>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="reset-btn" class="secondary-btn">重置默认</button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <!-- General Settings -->
+      <section id="general" class="settings-section active">
+        <h1>常规设置</h1>
+        <div class="setting-item">
+          <div class="setting-info">
+            <label>自动跳转 Gem</label>
+            <span>根据访问的域名自动切换到指定的 Gem 链接</span>
+          </div>
+          <div class="setting-control">
+            <label class="switch">
+              <input type="checkbox" id="auto-jump" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <label>默认 Gem 链接</label>
+            <span>当无匹配域名时跳转到的 Gem (留空则默认 Gemini)</span>
+          </div>
+          <div class="setting-control">
+            <input type="text" id="default-gem" placeholder="https://gemini.google.com/app/..." style="width: 250px;">
+          </div>
+        </div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <label>自动专注</label>
+            <span>操作完成后自动将焦点切换回 Gemini 输入框</span>
+          </div>
+          <div class="setting-control">
+            <label class="switch">
+              <input type="checkbox" id="auto-focus" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Capture Settings -->
+      <section id="capture" class="settings-section">
+        <h1>截图设置</h1>
+        <div class="setting-item">
+          <div class="setting-info">
+            <label>拍摄延迟 (ms)</label>
+            <span>滚动截图时每一帧的等待时间。增加此值可解决空白页问题，但会变慢。</span>
+          </div>
+          <div class="setting-control">
+            <input type="range" id="capture-delay" min="300" max="2000" step="100" value="800">
+            <span id="delay-val">800ms</span>
+          </div>
+        </div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <label>重试次数</label>
+            <span>遇到配额限制（Quota Error）时的自动重试次数。</span>
+          </div>
+          <div class="setting-control">
+            <input type="number" id="capture-retries" value="3" min="1" max="10">
+          </div>
+        </div>
+      </section>
+
+      <!-- Gem Mapping Settings -->
+      <section id="prompts" class="settings-section">
+        <h1>Gem 跳转映射</h1>
+        <p class="description">设定在特定站点中自动切换到的 Gem 链接。</p>
+        <div id="mapping-list" class="mapping-list">
+          <!-- Mappings will be injected here -->
+        </div>
+        <button id="add-mapping-btn" class="secondary-btn" style="margin-top: 16px;">+ 添加映射</button>
+      </section>
+
+      <!-- About -->
+      <section id="about" class="settings-section">
+        <h1>关于 Gemini Sidebar</h1>
+        <p>版本 1.0.0</p>
+        <p>旨在通过侧边栏无缝集成 Google Gemini，提升网页阅读与协作效率。</p>
+        <div class="about-links">
+          <a href="#" class="link">检查更新</a>
+          <a href="#" class="link">反馈建议</a>
+        </div>
+      </section>
+
+      <footer class="main-footer">
+        <div id="status-message" class="status"></div>
+        <button id="save-btn" class="primary-btn">保存设置</button>
+      </footer>
+    </main>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>

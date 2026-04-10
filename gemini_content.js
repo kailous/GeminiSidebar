@@ -31,15 +31,15 @@ function injectButtons(menu) {
   console.log('Gemini Sidebar: Injecting tools into menu');
 
   // 1. Screenshot Button
-  const screenshotBtn = createMenuButton('截图当前屏幕', 'image', () => {
+  const screenshotBtn = createMenuButton('滚动截图 (至当前位置)', 'image', () => {
     chrome.runtime.sendMessage({ action: 'summarize_page' });
-    return '正在截屏...';
+    return '正在滚动截屏...';
   });
 
   // 2. Full Text Button
-  const fullTextBtn = createMenuButton('读取网页全文', 'description', () => {
+  const fullTextBtn = createMenuButton('智能提取正文 (Markdown)', 'article', () => {
     chrome.runtime.sendMessage({ action: 'read_full_text' });
-    return '正在解析全文...';
+    return '正在提取正文...';
   });
 
   // Add them to the menu
