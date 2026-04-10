@@ -16,7 +16,7 @@
       ]
     },
     "condition": {
-      "urlFilter": "*://gemini.google.com/*",
+      "regexFilter": "^https?://(gemini\\.google\\.com|labs\\.google)(/.*)?",
       "resourceTypes": [
         "sub_frame"
       ]

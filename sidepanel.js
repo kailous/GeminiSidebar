@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Listen for messages from injected content script
+  // Listen for messages from injected content script (legacy/other)
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'summarize_page') {
       triggerSummarize();

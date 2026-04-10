@@ -3,18 +3,18 @@
  * Injected into gemini.google.com to integrate extension features.
  */
 
-// Observe for the upload menu
+// Global MutationObserver to handle upload menu injection
 const observer = new MutationObserver((mutations) => {
   for (const mutation of mutations) {
-    for (const node of mutation.addedNodes) {
+    mutation.addedNodes.forEach(node => {
       if (node.nodeType === 1) { // Element node
-        // Check if the node is the menu or contains the menu
+        // Check for Upload Menu
         const menu = node.querySelector('#upload-file-menu') || (node.id === 'upload-file-menu' ? node : null);
         if (menu && !menu.querySelector('.ext-summarize-item')) {
           injectButtons(menu);
         }
       }
-    }
+    });
   }
 });
 
