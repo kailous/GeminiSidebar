@@ -335,3 +335,46 @@ input:checked + .slider:before { transform: translateX(20px); }
   color: #ea4335;
 }
 
+.update-guide {
+  background: rgba(52, 168, 83, 0.05);
+  border: 1px solid rgba(52, 168, 83, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 12px;
+  color: var(--text-primary);
+}
+
+.update-alert {
+  font-size: 15px;
+  margin-bottom: 12px;
+  color: #34a853;
+}
+
+.steps {
+  padding-left: 20px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.steps li {
+  margin-bottom: 8px;
+}
+
+.primary-btn-mini {
+  background: var(--accent);
+  color: white;
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  display: inline-block;
+  margin-bottom: 4px;
+  transition: background 0.2s;
+}
+
+.primary-btn-mini:hover {
+  background: var(--accent-hover);
+}
+
+

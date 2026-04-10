@@ -68,8 +68,23 @@ async function checkForUpdates() {
       : release.html_url;
 
     if (isNewer(latestVersion, currentVersion)) {
-      updateStatus.innerHTML = `发现新版本: <strong>${latestVersion}</strong>！<a href="${downloadUrl}" target="_blank" class="link">直接下载 ZIP 包</a>`;
+      updateStatus.innerHTML = `
+        <div class="update-guide">
+          <div class="update-alert">发现新版本: <strong>${latestVersion}</strong></div>
+          <ol class="steps">
+            <li><a href="${downloadUrl}" target="_blank" class="primary-btn-mini">1. 下载最新 ZIP 包</a></li>
+            <li>解压并将内容覆盖到当前插件所在目录</li>
+            <li>前往 <a href="#" id="open-extensions" class="link">chrome://extensions</a> 刷新本插件</li>
+          </ol>
+        </div>
+      `;
       updateStatus.className = "update-status new-version";
+
+      // Listener for the extension page link (Instructional)
+      document.getElementById('open-extensions').addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('请在浏览器地址栏输入 chrome://extensions 并回车，然后点击本插件的“刷新”图标。');
+      });
     } else {
       updateStatus.textContent = "当前已是最新版本 (" + currentVersion + ")";
       updateStatus.className = "update-status";
